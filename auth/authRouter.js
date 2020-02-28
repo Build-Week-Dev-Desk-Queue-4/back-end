@@ -5,8 +5,8 @@ const generateToken = require('../utils/generateToken');
 const errorHandler = require('../utils/errorHandler');
 
 router.post('/register', (req, res) => {
-    const { username, password, role, first_name, last_name } = req.body;
-    let user = { username, password, role, first_name, last_name };
+    const { username, password, role, first_name, last_name, email } = req.body;
+    let user = { username, password, role, first_name, last_name, email };
     const hash = bcrypt.hashSync(user.password, 8); //higher in production
     user.password = hash;
 
@@ -21,7 +21,7 @@ router.post('/register', (req, res) => {
 router.post('/login', (req, res) => {
     let { username, password } = req.body;
 
-    users.getBy({ username }).then(user => {
+    users.getBy({ username }).first().then(user => {
         if (user && bcrypt.compareSync(password, user.password)) {
             const token = generateToken(user);
             res.status(200).json({ message: `Welcome back, ${username}!`, token});

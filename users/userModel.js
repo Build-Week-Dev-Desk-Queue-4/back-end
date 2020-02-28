@@ -22,6 +22,7 @@ function get() {
     return db('users');
 }
 
+//DO NOT return password!!!!!
 function getById(id) {
     return db('users').where({ id }).first();
 }
