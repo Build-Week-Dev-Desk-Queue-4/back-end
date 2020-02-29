@@ -5,6 +5,7 @@ const validateUser = require('../utils/user-middleware/validateUser');
 const validateUserId = require('../utils/user-middleware/validateUserId');
 const validatePutAndFilter = require('../utils/user-middleware/validatePutAndFilter');
 const validateUserRemoval = require('../utils/validateUserRemoval');
+const getTicketData = require('../utils/getTicketData');
 
 //gets a list of all users
 router.get('/', (req, res) => {
@@ -33,9 +34,10 @@ router.get('/getby/filter', validatePutAndFilter, (req, res) => {
 });
 
 router.get('/asker/:id/tickets', validateUserId, (req, res) => {
-    users.getTicketsByAskerId(req.params.id).then(tickets => {
+    users.getTicketsByAskerId(req.params.id).then(async tickets => {
         if (tickets.length > 0) {
-            res.status(200).json(tickets);
+            const ticketsToSend = await Promise.all(tickets.map(async ticket => getTicketData(ticket)));
+            res.status(200).json(ticketsToSend);
         } else {
             res.status(204).json({ message: 'No tickets found.' });
         }
@@ -45,9 +47,10 @@ router.get('/asker/:id/tickets', validateUserId, (req, res) => {
 });
 
 router.get('/solvedby/:id/tickets', validateUserId, (req, res) => {
-    users.getTicketsBySolvedById(req.params.id).then(tickets => {
+    users.getTicketsBySolvedById(req.params.id).then(async tickets => {
         if (tickets.length > 0) {
-            res.status(200).json(tickets);
+            const ticketsToSend = await Promise.all(tickets.map(async ticket => getTicketData(ticket)));
+            res.status(200).json(ticketsToSend);
         } else {
             res.status(204).json({ message: 'No tickets found.' });
         }
@@ -57,9 +60,10 @@ router.get('/solvedby/:id/tickets', validateUserId, (req, res) => {
 });
 
 router.get('/assignee/:id/tickets', validateUserId, (req, res) => {
-    users.getTicketsByAssignee(req.params.id).then(tickets => {
+    users.getTicketsByAssignee(req.params.id).then(async tickets => {
         if (tickets.length > 0) {
-            res.status(200).json(tickets);
+            const ticketsToSend = await Promise.all(tickets.map(async ticket => getTicketData(ticket)));
+            res.status(200).json(ticketsToSend);
         } else {
             res.status(204).json({ message: 'No tickets found.' });
         }
@@ -71,9 +75,25 @@ router.get('/assignee/:id/tickets', validateUserId, (req, res) => {
 //returns ALL tickets associated with the user, including
 //tickets the user opened, solved, assigned or was assigned to.
 router.get('/:id/alltickets', validateUserId, (req, res) => {
-    users.getAllAssociatedTickets(req.params.id).then(tickets => {
+    users.getAllAssociatedTickets(req.params.id).then(async tickets => {
         if (tickets.length > 0) {
+            const ticketsToSend = await Promise.all(tickets.map(async ticket => getTicketData(ticket)));
+            res.status(200).json(ticketsToSend);
             res.status(200).json(tickets);
+        } else {
+            res.status(204).json({ message: 'No tickets found.' });
+        }
+    }).catch(err => {
+        errorHandler(err, 500, 'Unable to retrieve tickets.');
+    });
+});
+
+//Same as above but only returns open tickets
+router.get('/:id/allopentickets', validateUserId, (req, res) => {
+    users.getAllAssociatedOpenTickets(req.params.id).then(async tickets => {
+        if (tickets.length > 0) {
+            const ticketsToSend = await Promise.all(tickets.map(async ticket => getTicketData(ticket)));
+            res.status(200).json(ticketsToSend);
         } else {
             res.status(204).json({ message: 'No tickets found.' });
         }

@@ -10,6 +10,7 @@ module.exports = {
     getTicketsBySolvedById,
     getTicketsByAssignee,
     getAllAssociatedTickets,
+    getAllAssociatedOpenTickets,
     update,
     remove
 }
@@ -44,6 +45,14 @@ function getTicketsByAskerId(id) {
 function getAllAssociatedTickets(id) {
     return db('tickets')
         .where('asker_id', id)
+        .orWhere('solved_by', id)
+        .orWhere('assignee', id)
+        .orWhere('assigned_by', id);
+}
+
+function getAllAssociatedOpenTickets(id) {
+    return db('tickets')
+        .where({ asker_id: id, resolved: false } )
         .orWhere('solved_by', id)
         .orWhere('assignee', id)
         .orWhere('assigned_by', id);
