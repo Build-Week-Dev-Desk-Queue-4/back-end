@@ -7,7 +7,7 @@ module.exports = {
     getBy,
     getTicketsByAskerId,
     getTicketsBySolvedById,
-    getTicketsByAsignee,
+    getTicketsByAssignee,
     update,
     remove
 }
@@ -18,6 +18,7 @@ async function insert(user) {
     return getById(id).select('id', 'username', 'role', 'first_name', 'last_name', 'email');
 }
 
+//DO NOT return password!!!!!
 function get() {
     return db('users');
 }
@@ -27,6 +28,7 @@ function getById(id) {
     return db('users').where({ id }).first();
 }
 
+//DO NOT return password!!!!!
 function getBy(filter) {
     return db('users').where(filter);
 }
@@ -39,7 +41,7 @@ function getTicketsBySolvedById(id) {
     return db('tickets').where('solved_by', id);
 }
 
-function getTicketsByAsignee(id) {
+function getTicketsByAssignee(id) {
     return db('tickets').where('asignee', id);
 }
 
@@ -50,10 +52,6 @@ function update(changes, id) {
 }
 
 function remove(id) {
-    //returns deleted user
-    return getById(id).then(user => {
-        return db('users').where({ id }).del().then(count => {
-            return user;
-        });
-    });
+    return db('users').where({ id }).del();
+
 }

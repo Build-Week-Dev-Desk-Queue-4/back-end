@@ -1,6 +1,9 @@
 const router = require('express').Router();
 const users = require('./userModel');
 const errorHandler = require('../utils/errorHandler');
+const validateUser = require('../utils/user-middleware/validateUser');
+const validateUserId = require('../utils/user-middleware/validateUserId');
+const validatePutAndFilter = require('../utils/user-middleware/validatePutAndFilter');
 
 //gets a list of all users
 router.get('/', (req, res) => {
@@ -11,20 +14,80 @@ router.get('/', (req, res) => {
     });
 });
 
-//validate id middleware
-router.get('/:id', (req, res) => {
-    const { id } = req.params;
+router.get('/:id', validateUserId, (req, res) => {
+    res.status(200).json(req.user);
+});
 
-    users.getById(id)
-    .then(user => {
-        if (user) {
-            res.json(user);
+router.get('/filter', validatePutAndFilter, (req, res) => {
+    //TEST Should I make the filter put in an obj like, { filter: { username: "blah" } }
+    users.getBy(req.body).then(users => {
+        if (users.length > 0) {
+            res.status(200).json(users);
         } else {
-            res.status(404).json({ message: 'Could not find user with given id.' })
+            res.status(500).json({ message: 'No users found.' });
         }
-    })
-    .catch(err => {
-        errorHandler(err, 500, 'Failed to get user.');
+    }).catch(err => {
+        errorHandler(err, 500, 'Unable to retrieve users.');
+    });
+});
+
+router.get('/asker/:id/tickets', validateUserId, (req, res) => {
+    users.getTicketsByAskerId(req.params.id).then(tickets => {
+        if (tickets.length > 0) {
+            res.status(200).json({ tickets });
+        } else {
+            res.status(204).json({ message: 'No tickets found.' });
+        }
+    }).catch(err => {
+        errorHandler(err, 500, 'Unable to retrieve tickets.');
+    });
+});
+
+router.get('/solvedby/:id/tickets', validateUserId, (req, res) => {
+    users.getTicketsBySolvedById(req.params.id).then(tickets => {
+        if (tickets.length > 0) {
+            res.status(200).json({ tickets });
+        } else {
+            res.status(204).json({ message: 'No tickets found.' });
+        }
+    }).catch(err => {
+        errorHandler(err, 500, 'Unable to retrieve tickets.');
+    });
+});
+
+router.get('/assignee/:id/tickets', validateUserId, (req, res) => {
+    users.getTicketsByAssignee(req.params.id).then(tickets => {
+        if (tickets.length > 0) {
+            res.status(200).json({ tickets });
+        } else {
+            res.status(204).json({ message: 'No tickets found.' });
+        }
+    }).catch(err => {
+        errorHandler(err, 500, 'Unable to retrieve tickets.');
+    });
+});
+
+router.post('/', validateUser, (req, res) => {
+    users.insert(req.body).then(user => {
+        res.status(201).json(user);
+    }).catch(err => {
+        errorHandler(err, 500, 'Could not add user.');
+    });
+});
+
+router.put('/:id', validateUserId, validatePutAndFilter, (req, res) => {
+    users.update(req.body, req.params.id).then(user => {
+        res.status(200).json(user);
+    }).catch(err => {
+        errorHandler(err, 500, 'Could not update user.');
+    });
+});
+
+router.delete('/:id', validateUserId, (req, res) => {
+    users.remove(req.params.id).then(numDeleted => {
+        res.status(200).json(req.user);
+    }).catch(err => {
+        errorHandler(err, 500, "The user could not be removed");
     });
 });
 
