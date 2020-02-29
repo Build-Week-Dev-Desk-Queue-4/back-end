@@ -4,6 +4,7 @@ const errorHandler = require('../utils/errorHandler');
 const validateUser = require('../utils/user-middleware/validateUser');
 const validateUserId = require('../utils/user-middleware/validateUserId');
 const validatePutAndFilter = require('../utils/user-middleware/validatePutAndFilter');
+const validateUserRemoval = require('../utils/validateUserRemoval');
 
 //gets a list of all users
 router.get('/', (req, res) => {
@@ -18,8 +19,8 @@ router.get('/:id', validateUserId, (req, res) => {
     res.status(200).json(req.user);
 });
 
-router.get('/filter', validatePutAndFilter, (req, res) => {
-    //TEST Should I make the filter put in an obj like, { filter: { username: "blah" } }
+router.get('/getby/filter', validatePutAndFilter, (req, res) => {
+    //must be { clumname: columnvalue}
     users.getBy(req.body).then(users => {
         if (users.length > 0) {
             res.status(200).json(users);
@@ -83,7 +84,8 @@ router.put('/:id', validateUserId, validatePutAndFilter, (req, res) => {
     });
 });
 
-router.delete('/:id', validateUserId, (req, res) => {
+//can only be done by an team leads, section leads or the user themselves
+router.delete('/:id', validateUserId, validateUserRemoval, (req, res) => {
     users.remove(req.params.id).then(numDeleted => {
         res.status(200).json(req.user);
     }).catch(err => {

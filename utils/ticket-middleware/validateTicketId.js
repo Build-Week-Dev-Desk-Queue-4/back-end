@@ -1,5 +1,5 @@
 const tickets = require('../../tickets/ticketModel');
-const errorHandler = requre('./errorHandler.js');
+const errorHandler = require('../errorHandler.js');
 
 module.exports = (req, res, next) => {
     tickets.getById(req.params.id).then(ticket => {

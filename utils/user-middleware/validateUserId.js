@@ -1,5 +1,5 @@
 const users = require('../../users/userModel');
-const errorHandler = requre('./errorHandler.js');
+const errorHandler = require('../errorHandler');
 
 module.exports = (req, res, next) => {
     users.getById(req.params.id).then(user => {
