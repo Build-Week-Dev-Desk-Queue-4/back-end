@@ -34,7 +34,7 @@ router.get('/filter', validatePutAndFilter, (req, res) => {
 router.get('/asker/:id/tickets', validateUserId, (req, res) => {
     users.getTicketsByAskerId(req.params.id).then(tickets => {
         if (tickets.length > 0) {
-            res.status(200).json({ tickets });
+            res.status(200).json(tickets);
         } else {
             res.status(204).json({ message: 'No tickets found.' });
         }
@@ -46,7 +46,7 @@ router.get('/asker/:id/tickets', validateUserId, (req, res) => {
 router.get('/solvedby/:id/tickets', validateUserId, (req, res) => {
     users.getTicketsBySolvedById(req.params.id).then(tickets => {
         if (tickets.length > 0) {
-            res.status(200).json({ tickets });
+            res.status(200).json(tickets);
         } else {
             res.status(204).json({ message: 'No tickets found.' });
         }
@@ -58,7 +58,7 @@ router.get('/solvedby/:id/tickets', validateUserId, (req, res) => {
 router.get('/assignee/:id/tickets', validateUserId, (req, res) => {
     users.getTicketsByAssignee(req.params.id).then(tickets => {
         if (tickets.length > 0) {
-            res.status(200).json({ tickets });
+            res.status(200).json(tickets);
         } else {
             res.status(204).json({ message: 'No tickets found.' });
         }
