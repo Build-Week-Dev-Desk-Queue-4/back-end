@@ -20,7 +20,7 @@ router.get('/:id', validateUserId, (req, res) => {
 });
 
 router.get('/getby/filter', validatePutAndFilter, (req, res) => {
-    //must be { clumname: columnvalue}
+    //must be { columname: columnvalue}
     users.getBy(req.body).then(users => {
         if (users.length > 0) {
             res.status(200).json(users);
@@ -68,6 +68,20 @@ router.get('/assignee/:id/tickets', validateUserId, (req, res) => {
     });
 });
 
+//returns ALL tickets associated with the user, including
+//tickets the user opened, solved, assigned or was assigned to.
+router.get('/:id/alltickets', validateUserId, (req, res) => {
+    users.getAllAssociatedTickets(req.params.id).then(tickets => {
+        if (tickets.length > 0) {
+            res.status(200).json(tickets);
+        } else {
+            res.status(204).json({ message: 'No tickets found.' });
+        }
+    }).catch(err => {
+        errorHandler(err, 500, 'Unable to retrieve tickets.');
+    });
+});
+
 router.post('/', validateUser, (req, res) => {
     users.insert(req.body).then(user => {
         res.status(201).json(user);
@@ -84,7 +98,7 @@ router.put('/:id', validateUserId, validatePutAndFilter, (req, res) => {
     });
 });
 
-//can only be done by an team leads, section leads or the user themselves
+//can only be done by a team leads, section leads or the user themselves
 router.delete('/:id', validateUserId, validateUserRemoval, (req, res) => {
     users.remove(req.params.id).then(numDeleted => {
         res.status(200).json(req.user);

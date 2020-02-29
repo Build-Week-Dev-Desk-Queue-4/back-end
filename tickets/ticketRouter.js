@@ -16,14 +16,11 @@ router.get('/', (req, res) => {
 });
 
 router.get('/:id', validateTicketId, async (req, res) => {
-    //TODO make sure boolean values are returned as true/false, not 0/1
-    // res.status(200).json(req.ticket);
     const ticket = await getTicketData(req.ticket);
     res.status(200).json(ticket);
 });
 
 router.get('/getby/filter', validateTicketPutAndFilter, (req, res) => {
-    //TODO make sure boolean values are returned as true/false, not 0/1
     //must be { clumname: columnvalue}
     tickets.getBy(req.body).then(async tickets => {
         if (tickets.length > 0) {
@@ -38,7 +35,6 @@ router.get('/getby/filter', validateTicketPutAndFilter, (req, res) => {
 });
 
 router.get('/open', (req, res) => {
-    //TODO make sure boolean values are returned as true/false, not 0/1
     tickets.getAllOpen().then(async tickets => {
         const ticketsToSend = await Promise.all(tickets.map(async ticket => getTicketData(ticket)));
         res.status(200).json(ticketsToSend);
@@ -48,7 +44,6 @@ router.get('/open', (req, res) => {
 });
 
 router.get('/newest', (req, res) => {
-    //TODO make sure boolean values are returned as true/false, not 0/1
     tickets.getNewest().then(async tickets => {
         const ticketsToSend = await Promise.all(tickets.map(async ticket => getTicketData(ticket)));
         res.status(200).json(ticketsToSend);
@@ -58,7 +53,6 @@ router.get('/newest', (req, res) => {
 });
 
 router.get('/oldest', (req, res) => {
-    //TODO make sure boolean values are returned as true/false, not 0/1
     tickets.getOldest().then(async tickets => {
         const ticketsToSend = await Promise.all(tickets.map(async ticket => getTicketData(ticket)));
         res.status(200).json(ticketsToSend);
@@ -68,9 +62,12 @@ router.get('/oldest', (req, res) => {
 });
 
 router.get('/:id/comments', validateTicketId, (req, res) => {
-    //TODO make sure boolean values are returned as true/false, not 0/1
     tickets.getComments(req.params.id).then(comments => {
         if (comments.length > 0) {
+            comments.forEach(comment => {
+                comment.is_solution === 0 ? comment.is_solution = false : comment.is_solution = true;
+                return comment;
+            });
             res.status(200).json(comments);
         } else {
             res.status(204).json({ message: 'No comments found.' });

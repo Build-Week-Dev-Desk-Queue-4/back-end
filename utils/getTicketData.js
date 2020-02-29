@@ -23,6 +23,6 @@ module.exports = async ticket => {
     comments.forEach(comment => {
         comment.is_solution === 0 ? comment.is_solution = false : comment.is_solution = true;
         return comment;
-    })
+    });
     return { ...ticket, asker: asker, solved_by: solver, assignee: assignee, assigned_by: assigner, comments: comments };
 }
