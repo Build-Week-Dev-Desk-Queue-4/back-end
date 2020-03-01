@@ -53,7 +53,7 @@ router.get('/solvedby/:id/tickets', validateUserId, (req, res) => {
             const ticketsToSend = await Promise.all(tickets.map(async ticket => getTicketData(ticket)));
             res.status(200).json(ticketsToSend);
         } else {
-            res.status(204).json({ message: 'No tickets found.' });
+            res.status(204).send();
         }
     }).catch(err => {
         errorHandler(err, 500, 'Unable to retrieve tickets.');
@@ -66,7 +66,7 @@ router.get('/assignee/:id/tickets', validateUserId, (req, res) => {
             const ticketsToSend = await Promise.all(tickets.map(async ticket => getTicketData(ticket)));
             res.status(200).json(ticketsToSend);
         } else {
-            res.status(204).json({ message: 'No tickets found.' });
+            res.status(204).send();
         }
     }).catch(err => {
         errorHandler(err, 500, 'Unable to retrieve tickets.');
@@ -82,7 +82,7 @@ router.get('/:id/alltickets', validateUserId, (req, res) => {
             res.status(200).json(ticketsToSend);
             res.status(200).json(tickets);
         } else {
-            res.status(204).json({ message: 'No tickets found.' });
+            res.status(204).send();
         }
     }).catch(err => {
         errorHandler(err, 500, 'Unable to retrieve tickets.');
@@ -96,7 +96,7 @@ router.get('/:id/allopentickets', validateUserId, (req, res) => {
             const ticketsToSend = await Promise.all(tickets.map(async ticket => getTicketData(ticket)));
             res.status(200).json(ticketsToSend);
         } else {
-            res.status(204).json({ message: 'No tickets found.' });
+            res.status(204).send();
         }
     }).catch(err => {
         errorHandler(err, 500, 'Unable to retrieve tickets.');

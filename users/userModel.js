@@ -65,7 +65,7 @@ function getTicketsBySolvedById(id) {
 }
 
 function getTicketsByAssignee(id) {
-    return db('tickets').where('asignee', id);
+    return db('tickets').where('assignee', id);
 }
 
 function update(changes, id) {

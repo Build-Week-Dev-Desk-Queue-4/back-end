@@ -92,7 +92,7 @@ router.post('/:id/comments', validateTicketId, validateComment, (req, res) => {
 });
 
 router.post('/', validateTicket, (req, res) => {
-    tickets.insert(req.body).then(ticket => {
+    tickets.insert(req.body).then(async ticket => {
         const ticketToSend = await getTicketData(ticket);
         res.status(201).json(ticketToSend);
     }).catch(err => {
@@ -101,7 +101,7 @@ router.post('/', validateTicket, (req, res) => {
 });
 
 router.put('/:id', validateTicketId, validateTicketPutAndFilter, (req, res) => {
-    tickets.update(req.body, req.params.id).then(ticket => {
+    tickets.update(req.body, req.params.id).then(async ticket => {
         const ticketToSend = await getTicketData(ticket);
         res.status(201).json(ticketToSend);
     }).catch(err => {
@@ -111,7 +111,7 @@ router.put('/:id', validateTicketId, validateTicketPutAndFilter, (req, res) => {
 
 //can only be done by a team leads, section leads or the user themselves
 router.delete('/:id', validateTicketId, validateTicketRemoval, (req, res) => {
-    tickets.remove(req.params.id).then(numDeleted => {
+    tickets.remove(req.params.id).then(async numDeleted => {
         const ticket = await getTicketData(req.ticket);
         res.status(200).json(ticket);
     }).catch(err => {
