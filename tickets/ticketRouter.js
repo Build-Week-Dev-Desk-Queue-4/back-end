@@ -6,7 +6,6 @@ const validateTicketPutAndFilter = require('../utils/ticket-middleware/validateT
 const getTicketData = require('../utils/ticket-middleware/getTicketData');
 const validateTicket = require('../utils/ticket-middleware/validateTicket');
 const validateTicketRemoval = require('../utils/ticket-middleware/validateTicketRemoval');
-
 const comments = require('../comments/commentModel');
 const validateComment = require('../utils/comment-middleware/validateComment');
 
@@ -39,7 +38,7 @@ router.get('/getby/filter', validateTicketPutAndFilter, (req, res) => {
     });
 });
 
-router.get('/open', (req, res) => {
+router.get('/all/open', (req, res) => {
     tickets.getAllOpen().then(async tickets => {
         const ticketsToSend = await Promise.all(tickets.map(async ticket => getTicketData(ticket)));
         res.status(200).json(ticketsToSend);
@@ -48,7 +47,7 @@ router.get('/open', (req, res) => {
     });
 });
 
-router.get('/newest', (req, res) => {
+router.get('/all/newest', (req, res) => {
     tickets.getNewest().then(async tickets => {
         const ticketsToSend = await Promise.all(tickets.map(async ticket => getTicketData(ticket)));
         res.status(200).json(ticketsToSend);
@@ -57,7 +56,7 @@ router.get('/newest', (req, res) => {
     });
 });
 
-router.get('/oldest', (req, res) => {
+router.get('/all/oldest', (req, res) => {
     tickets.getOldest().then(async tickets => {
         const ticketsToSend = await Promise.all(tickets.map(async ticket => getTicketData(ticket)));
         res.status(200).json(ticketsToSend);

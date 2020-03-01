@@ -12,7 +12,7 @@ function getById(id) {
     return db('comments as c')
         .join('users as u', 'u.id', 'c.commenter_id')
         .select('c.id', 'u.role', 'u.username', 'u.first_name', 'u.last_name', 'c.comment', 'c.is_solution')
-        .where({ id }).first();
+        .where('c.id', id).first();
 }
 
 async function insert(comment) {

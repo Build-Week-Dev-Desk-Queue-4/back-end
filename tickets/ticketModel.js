@@ -33,11 +33,11 @@ function getAllOpen() {
 }
 
 function getNewest() {
-    return db('tickets').orderBy('created_at');
+    return db('tickets').orderBy('created_at', 'desc');
 }
 
 function getOldest() {
-    return db('tickets').orderBy('created_at', 'desc');
+    return db('tickets').orderBy('created_at');
 }
 
 function getComments(id) {
