@@ -30,7 +30,9 @@ function getById(id) {
 }
 
 function getBy(filter) {
-    return db('users').where(filter).select('id', 'username', 'role', 'first_name', 'last_name', 'email');
+    return db('users')
+        .where(Object.keys(filter)[0], 'like', '%' + Object.values(filter)[0] + '%')
+        .select('id', 'username', 'role', 'first_name', 'last_name', 'email');
 }
 
 //for login

@@ -21,7 +21,7 @@ function getById(id) {
 
 //this should allow get by category, title, description, resolved or not, not being solved
 function getBy(filter) {
-    return db('tickets').where(filter);
+    return db('tickets').where(Object.keys(filter)[0], 'like', '%' + Object.values(filter)[0] + '%');
 }
 
 //return all tickets that aren't resolved AND aren't being solved.
