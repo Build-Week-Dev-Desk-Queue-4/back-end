@@ -4,6 +4,7 @@ const errorHandler = require('../utils/errorHandler');
 const validateTicketId = require('../utils/ticket-middleware/validateTicketId');
 const validateTicketPutAndFilter = require('../utils/ticket-middleware/validateTicketPutAndFilter');
 const getTicketData = require('../utils/getTicketData');
+const validateTicket = require('../utils/ticket-middleware/validateTicket');
 
 router.get('/', (req, res) => {
     //TODO make sure boolean values are returned as true/false, not 0/1
@@ -74,6 +75,24 @@ router.get('/:id/comments', validateTicketId, (req, res) => {
         }
     }).catch(err => {
         errorHandler(err, 500, 'Unable to retrieve comments.');
+    });
+});
+
+router.post('/', validateTicket, (req, res) => {
+    tickets.insert(req.body).then(ticket => {
+        const ticketToSend = await getTicketData(ticket);
+        res.status(201).json(ticketToSend);
+    }).catch(err => {
+        errorHandler(err, 500, 'Could not add ticket.');
+    });
+});
+
+router.put('/:id', validateTicketId, validateTicketPutAndFilter, (req, res) => {
+    tickets.update(req.body, req.params.id).then(ticket => {
+        const ticketToSend = await getTicketData(ticket);
+        res.status(201).json(ticketToSend);
+    }).catch(err => {
+        errorHandler(err, 500, 'Could not update ticket.');
     });
 });
 
