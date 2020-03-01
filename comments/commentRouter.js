@@ -9,7 +9,7 @@ router.put('/:id', validateCommentId, validateCommentPutAndFilter, (req, res) =>
     comments.update(req.body, req.params.id).then(comment => {
         res.status(200).json(comment);
     }).catch(err => {
-        errorHandler(err, 500, 'Could not update comment.');
+        errorHandler(res, err, 500, 'Could not update comment.');
     });
 });
 
@@ -18,7 +18,7 @@ router.delete('/:id', validateCommentId, validateCommentRemoval, (req, res) => {
     comments.remove(req.params.id).then(comment => {
         res.status(200).json(comment);
     }).catch(err => {
-        errorHandler(err, 500, "The comment could not be removed");
+        errorHandler(res, err, 500, "The comment could not be removed");
     });
 });
 

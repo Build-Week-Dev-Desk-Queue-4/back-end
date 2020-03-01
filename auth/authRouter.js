@@ -14,7 +14,7 @@ router.post('/register', (req, res) => {
         const token = generateToken(addedUser);
         res.status(201).json({ user: addedUser, token });
     }).catch(err => {
-        errorHandler(err, 500, 'Unable to register user.');
+        errorHandler(res, err, 500, 'Unable to register user.');
     });
 });
 
@@ -29,7 +29,7 @@ router.post('/login', (req, res) => {
             res.status(401).json({ message: 'Invalid Credentials' });
         }
     }).catch(err => {
-        errorHandler(err, 500, 'Unable to log user in.');
+        errorHandler(res, err, 500, 'Unable to log user in.');
     });
 });
 

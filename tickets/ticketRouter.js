@@ -15,7 +15,7 @@ router.get('/', (req, res) => {
         const ticketsToSend = await Promise.all(tickets.map(async ticket => getTicketData(ticket)));
         res.status(200).json(ticketsToSend);
     }).catch(err => {
-        errorHandler(err, 500, 'Unable to retrieve tickets.');
+        errorHandler(res, err, 500, 'Unable to retrieve tickets.');
     });
 });
 
@@ -34,7 +34,7 @@ router.get('/getby/filter', validateTicketPutAndFilter, (req, res) => {
             res.status(500).json({ message: 'No tickets found.' });
         }
     }).catch(err => {
-        errorHandler(err, 500, 'Unable to retrieve tickets.');
+        errorHandler(res, err, 500, 'Unable to retrieve tickets.');
     });
 });
 
@@ -43,7 +43,7 @@ router.get('/all/open', (req, res) => {
         const ticketsToSend = await Promise.all(tickets.map(async ticket => getTicketData(ticket)));
         res.status(200).json(ticketsToSend);
     }).catch(err => {
-        errorHandler(err, 500, 'Unable to retrieve tickets.');
+        errorHandler(res, err, 500, 'Unable to retrieve tickets.');
     });
 });
 
@@ -52,7 +52,7 @@ router.get('/all/newest', (req, res) => {
         const ticketsToSend = await Promise.all(tickets.map(async ticket => getTicketData(ticket)));
         res.status(200).json(ticketsToSend);
     }).catch(err => {
-        errorHandler(err, 500, 'Unable to retrieve tickets.');
+        errorHandler(res, err, 500, 'Unable to retrieve tickets.');
     });
 });
 
@@ -61,7 +61,7 @@ router.get('/all/oldest', (req, res) => {
         const ticketsToSend = await Promise.all(tickets.map(async ticket => getTicketData(ticket)));
         res.status(200).json(ticketsToSend);
     }).catch(err => {
-        errorHandler(err, 500, 'Unable to retrieve tickets.');
+        errorHandler(res, err, 500, 'Unable to retrieve tickets.');
     });
 });
 
@@ -77,7 +77,7 @@ router.get('/:id/comments', validateTicketId, (req, res) => {
             res.status(204).json({ message: 'No comments found.' });
         }
     }).catch(err => {
-        errorHandler(err, 500, 'Unable to retrieve comments.');
+        errorHandler(res, err, 500, 'Unable to retrieve comments.');
     });
 });
 
@@ -86,7 +86,7 @@ router.post('/:id/comments', validateTicketId, validateComment, (req, res) => {
     comments.insert(req.body).then(comment => {
         res.status(201).json(comment);
     }).catch(err => {
-        errorHandler(err, 500, 'Could not add comment.');
+        errorHandler(res, err, 500, 'Could not add comment.');
     });
 });
 
@@ -95,7 +95,7 @@ router.post('/', validateTicket, (req, res) => {
         const ticketToSend = await getTicketData(ticket);
         res.status(201).json(ticketToSend);
     }).catch(err => {
-        errorHandler(err, 500, 'Could not add ticket.');
+        errorHandler(res, err, 500, 'Could not add ticket.');
     });
 });
 
@@ -104,7 +104,7 @@ router.put('/:id', validateTicketId, validateTicketPutAndFilter, (req, res) => {
         const ticketToSend = await getTicketData(ticket);
         res.status(201).json(ticketToSend);
     }).catch(err => {
-        errorHandler(err, 500, 'Could not update ticket.');
+        errorHandler(res, err, 500, 'Could not update ticket.');
     });
 });
 
@@ -114,7 +114,7 @@ router.delete('/:id', validateTicketId, validateTicketRemoval, (req, res) => {
         const ticket = await getTicketData(req.ticket);
         res.status(200).json(ticket);
     }).catch(err => {
-        errorHandler(err, 500, "The ticket could not be removed");
+        errorHandler(res, err, 500, "The ticket could not be removed");
     });
 });
 

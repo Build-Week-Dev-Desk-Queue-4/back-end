@@ -10,6 +10,6 @@ module.exports = (req, res, next) => {
             res.status(400).json({ message: "No ticket found with that id." });
         }
     }).catch(err => {
-        errorHandler(err, 500, "The ticket information could not be retrieved.");
+        errorHandler(res, err, 500, "The ticket information could not be retrieved.");
     });
 }

@@ -12,7 +12,7 @@ router.get('/', (req, res) => {
     users.get().then(users => {
         res.status(200).json(users);
     }).catch(err => {
-        errorHandler(err, 500, 'Unable to retrieve users.');
+        errorHandler(res, err, 500, 'Unable to retrieve users.');
     });
 });
 
@@ -30,7 +30,7 @@ router.get('/getby/filter', validatePutAndFilter, (req, res) => {
             res.status(500).json({ message: 'No users found.' });
         }
     }).catch(err => {
-        errorHandler(err, 500, 'Unable to retrieve users.');
+        errorHandler(res, err, 500, 'Unable to retrieve users.');
     });
 });
 
@@ -43,7 +43,7 @@ router.get('/asker/:id/tickets', validateUserId, (req, res) => {
             res.status(204).json({ message: 'No tickets found.' });
         }
     }).catch(err => {
-        errorHandler(err, 500, 'Unable to retrieve tickets.');
+        errorHandler(res, err, 500, 'Unable to retrieve tickets.');
     });
 });
 
@@ -56,7 +56,7 @@ router.get('/solvedby/:id/tickets', validateUserId, (req, res) => {
             res.status(204).send();
         }
     }).catch(err => {
-        errorHandler(err, 500, 'Unable to retrieve tickets.');
+        errorHandler(res, err, 500, 'Unable to retrieve tickets.');
     });
 });
 
@@ -69,7 +69,7 @@ router.get('/assignee/:id/tickets', validateUserId, (req, res) => {
             res.status(204).send();
         }
     }).catch(err => {
-        errorHandler(err, 500, 'Unable to retrieve tickets.');
+        errorHandler(res, err, 500, 'Unable to retrieve tickets.');
     });
 });
 
@@ -85,7 +85,7 @@ router.get('/:id/alltickets', validateUserId, (req, res) => {
             res.status(204).send();
         }
     }).catch(err => {
-        errorHandler(err, 500, 'Unable to retrieve tickets.');
+        errorHandler(res, err, 500, 'Unable to retrieve tickets.');
     });
 });
 
@@ -99,7 +99,7 @@ router.get('/:id/allopentickets', validateUserId, (req, res) => {
             res.status(204).send();
         }
     }).catch(err => {
-        errorHandler(err, 500, 'Unable to retrieve tickets.');
+        errorHandler(res, err, 500, 'Unable to retrieve tickets.');
     });
 });
 
@@ -107,7 +107,7 @@ router.post('/', validateUser, (req, res) => {
     users.insert(req.body).then(user => {
         res.status(201).json(user);
     }).catch(err => {
-        errorHandler(err, 500, 'Could not add user.');
+        errorHandler(res, err, 500, 'Could not add user.');
     });
 });
 
@@ -115,7 +115,7 @@ router.put('/:id', validateUserId, validatePutAndFilter, (req, res) => {
     users.update(req.body, req.params.id).then(user => {
         res.status(200).json(user);
     }).catch(err => {
-        errorHandler(err, 500, 'Could not update user.');
+        errorHandler(res, err, 500, 'Could not update user.');
     });
 });
 
@@ -124,7 +124,7 @@ router.delete('/:id', validateUserId, validateUserRemoval, (req, res) => {
     users.remove(req.params.id).then(numDeleted => {
         res.status(200).json(req.user);
     }).catch(err => {
-        errorHandler(err, 500, "The user could not be removed");
+        errorHandler(res, err, 500, "The user could not be removed");
     });
 });
 
