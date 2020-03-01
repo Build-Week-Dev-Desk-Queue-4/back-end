@@ -4,7 +4,7 @@ const errorHandler = require('../utils/errorHandler');
 const validateUser = require('../utils/user-middleware/validateUser');
 const validateUserId = require('../utils/user-middleware/validateUserId');
 const validatePutAndFilter = require('../utils/user-middleware/validatePutAndFilter');
-const validateUserRemoval = require('../utils/validateUserRemoval');
+const validateUserRemoval = require('../utils/user-middleware/validateUserRemoval');
 const getTicketData = require('../utils/getTicketData');
 
 //gets a list of all users

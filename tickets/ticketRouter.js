@@ -5,6 +5,7 @@ const validateTicketId = require('../utils/ticket-middleware/validateTicketId');
 const validateTicketPutAndFilter = require('../utils/ticket-middleware/validateTicketPutAndFilter');
 const getTicketData = require('../utils/getTicketData');
 const validateTicket = require('../utils/ticket-middleware/validateTicket');
+const validateTicketRemoval = require('../utils/ticket-middleware/validateTicketRemoval');
 
 router.get('/', (req, res) => {
     //TODO make sure boolean values are returned as true/false, not 0/1
@@ -93,6 +94,16 @@ router.put('/:id', validateTicketId, validateTicketPutAndFilter, (req, res) => {
         res.status(201).json(ticketToSend);
     }).catch(err => {
         errorHandler(err, 500, 'Could not update ticket.');
+    });
+});
+
+//can only be done by a team leads, section leads or the user themselves
+router.delete('/:id', validateTicketId, validateTicketRemoval, (req, res) => {
+    tickets.remove(req.params.id).then(numDeleted => {
+        const ticket = await getTicketData(req.ticket);
+        res.status(200).json(ticket);
+    }).catch(err => {
+        errorHandler(err, 500, "The ticket could not be removed");
     });
 });
 

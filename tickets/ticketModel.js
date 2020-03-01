@@ -9,7 +9,8 @@ module.exports = {
     getOldest,
     getComments,
     insert,
-    update
+    update,
+    remove
 }
 
 //STRETCH: display number of comments with tickets.
@@ -55,4 +56,8 @@ function update(changes, id) {
     return db('tickets').where({ id }).update(changes).then(count => {
         return getById(id);
     });
+}
+
+function remove(id) {
+    return db('tickets').where({ id }).del();
 }
