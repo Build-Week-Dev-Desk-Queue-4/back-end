@@ -80,7 +80,6 @@ router.get('/:id/alltickets', validateUserId, (req, res) => {
         if (tickets.length > 0) {
             const ticketsToSend = await Promise.all(tickets.map(async ticket => getTicketData(ticket)));
             res.status(200).json(ticketsToSend);
-            res.status(200).json(tickets);
         } else {
             res.status(204).send();
         }
