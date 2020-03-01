@@ -3,7 +3,7 @@ const tickets = require('./ticketModel');
 const errorHandler = require('../utils/errorHandler');
 const validateTicketId = require('../utils/ticket-middleware/validateTicketId');
 const validateTicketPutAndFilter = require('../utils/ticket-middleware/validateTicketPutAndFilter');
-const getTicketData = require('../utils/getTicketData');
+const getTicketData = require('../utils/ticket-middleware/getTicketData');
 const validateTicket = require('../utils/ticket-middleware/validateTicket');
 const validateTicketRemoval = require('../utils/ticket-middleware/validateTicketRemoval');
 

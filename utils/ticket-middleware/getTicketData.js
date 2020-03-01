@@ -1,5 +1,5 @@
-const users = require('../users/userModel');
-const tickets = require('../tickets/ticketModel');
+const users = require('../../users/userModel');
+const tickets = require('../../tickets/ticketModel');
 
 module.exports = async ticket => {
     let solver = ticket.solved_by;
