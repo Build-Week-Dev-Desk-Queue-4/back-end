@@ -10,7 +10,6 @@ const comments = require('../comments/commentModel');
 const validateComment = require('../utils/comment-middleware/validateComment');
 
 router.get('/', (req, res) => {
-    //TODO make sure boolean values are returned as true/false, not 0/1
     tickets.get().then(async tickets => {
         const ticketsToSend = await Promise.all(tickets.map(async ticket => getTicketData(ticket)));
         res.status(200).json(ticketsToSend);

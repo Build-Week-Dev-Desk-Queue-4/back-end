@@ -3,8 +3,9 @@ const bcrypt = require('bcrypt');
 const users = require('../users/userModel');
 const generateToken = require('../utils/generateToken');
 const errorHandler = require('../utils/errorHandler');
+const validateUser = require('../utils/user-middleware/validateUser');
 
-router.post('/register', (req, res) => {
+router.post('/register', validateUser, (req, res) => {
     const { username, password, role, first_name, last_name, email } = req.body;
     let user = { username, password, role, first_name, last_name, email };
     const hash = bcrypt.hashSync(user.password, 8); //higher in production

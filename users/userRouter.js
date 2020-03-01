@@ -6,6 +6,7 @@ const validateUserId = require('../utils/user-middleware/validateUserId');
 const validatePutAndFilter = require('../utils/user-middleware/validatePutAndFilter');
 const validateUserRemoval = require('../utils/user-middleware/validateUserRemoval');
 const getTicketData = require('../utils/ticket-middleware/getTicketData');
+const checkRole = require('../utils/checkRole');
 
 //gets a list of all users
 router.get('/', (req, res) => {
@@ -102,7 +103,9 @@ router.get('/:id/allopentickets', validateUserId, (req, res) => {
     });
 });
 
-router.post('/', validateUser, (req, res) => {
+//allows section leads to add a student
+//students should be encouraged to change their password later
+router.post('/', checkRole('section lead'), validateUser, (req, res) => {
     users.insert(req.body).then(user => {
         res.status(201).json(user);
     }).catch(err => {
