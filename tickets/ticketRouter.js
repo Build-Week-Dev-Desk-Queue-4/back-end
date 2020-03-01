@@ -7,6 +7,9 @@ const getTicketData = require('../utils/ticket-middleware/getTicketData');
 const validateTicket = require('../utils/ticket-middleware/validateTicket');
 const validateTicketRemoval = require('../utils/ticket-middleware/validateTicketRemoval');
 
+const comments = require('../comments/commentModel');
+const validateComment = require('../utils/comment-middleware/validateComment');
+
 router.get('/', (req, res) => {
     //TODO make sure boolean values are returned as true/false, not 0/1
     tickets.get().then(async tickets => {
@@ -76,6 +79,15 @@ router.get('/:id/comments', validateTicketId, (req, res) => {
         }
     }).catch(err => {
         errorHandler(err, 500, 'Unable to retrieve comments.');
+    });
+});
+
+/*********************** COMMENT POST ********************/
+router.post('/:id/comments', validateTicketId, validateComment, (req, res) => {
+    comments.insert(req.body).then(comment => {
+        res.status(201).json(comment);
+    }).catch(err => {
+        errorHandler(err, 500, 'Could not add comment.');
     });
 });
 
