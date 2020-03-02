@@ -48,7 +48,7 @@ function getComments(id) {
 }
 
 async function insert(ticket) {
-    const [id] = await db('tickets').insert(ticket);
+    const [id] = await db('tickets').insert(ticket, 'id');
     return getById(id);
 }
 
