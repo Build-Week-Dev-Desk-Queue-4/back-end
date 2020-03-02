@@ -16,7 +16,7 @@ module.exports = {
 }
 
 async function insert(user) {
-    const [id] = await db('users').insert(user);
+    const [id] = await db('users').insert(user, 'id');
     //test this code!!!
     return getById(id).select('id', 'username', 'role', 'first_name', 'last_name', 'email');
 }

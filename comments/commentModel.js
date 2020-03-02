@@ -16,7 +16,7 @@ function getById(id) {
 }
 
 async function insert(comment) {
-    const [id] = await db('comments').insert(comment);
+    const [id] = await db('comments').insert(comment, 'id');
     return getById(id);
 }
 
