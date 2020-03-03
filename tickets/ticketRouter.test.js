@@ -2,7 +2,7 @@ const request = require('supertest');
 const server = require('../api/server');
 const comments = require('../comments/commentModel');
 
-describe('Jokes router', function() {
+describe('Ticket router', function() {
     test('should run the test', function() {
         expect(true).toBe(true);
     });
@@ -170,7 +170,7 @@ describe('Jokes router', function() {
         });
     });
 
-    describe('POST /, PUT /:id, DELETE /:id & POST /:id/comments', async () => {
+    describe('POST /, PUT /:id, DELETE /:id', async () => {
         const res = await request(server)
             .post(`/api/tickets`)
             .send({ 
