@@ -97,7 +97,7 @@ describe('user router', function() {
             expect(res.body[0].asker.id).toBe(id);
             expect(res.body[0]).toMatchObject({
                 id: expect.any(Number),
-                created_at: expect.stringMatching("2020-02-28 19:28:10"),
+                created_at: expect.stringMatching("2020-03-03 17:46:09"),
                 title: expect.any(String),
                 description: expect.any(String),
                 category: expect.any(String),
@@ -145,7 +145,7 @@ describe('user router', function() {
             expect(res.body[0].asker.id).toBe(id);
             expect(res.body[0]).toMatchObject({
                 id: expect.any(Number),
-                created_at: expect.stringMatching("2020-02-28 19:28:10"),
+                created_at: expect.stringMatching("2020-03-03 17:46:09"),
                 title: expect.any(String),
                 description: expect.any(String),
                 category: expect.any(String),
@@ -178,7 +178,7 @@ describe('user router', function() {
             expect(res.body[0].resolved).toBe(false);
             expect(res.body[0]).toMatchObject({
                 id: expect.any(Number),
-                created_at: expect.stringMatching("2020-02-28 19:28:10"),
+                created_at: expect.stringMatching("2020-03-03 17:46:09"),
                 title: expect.any(String),
                 description: expect.any(String),
                 category: expect.any(String),

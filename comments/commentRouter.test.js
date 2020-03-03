@@ -28,7 +28,7 @@ describe('Comment router', function() {
             .post(`/api/tickets/4/comments`)
             .send({ 
                 ticket_id: 4,
-                commenter_id: 1,
+                commenter_id: 11,
                 comment: 'testing all the things'
             })
             .set('Authorization', token);
@@ -64,7 +64,7 @@ describe('Comment router', function() {
             .post(`/api/tickets/4/comments`)
             .send({ 
                 ticket_id: 4,
-                commenter_id: 1,
+                commenter_id: 11,
                 comment: 'testing all the things'
             })
             .set('Authorization', token);
