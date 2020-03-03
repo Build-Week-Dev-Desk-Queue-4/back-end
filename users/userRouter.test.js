@@ -2,7 +2,7 @@ const request = require('supertest');
 const server = require('../api/server');
 const users = require('../users/userModel');
 
-describe('Jokes router', function() {
+describe('user router', function() {
     test('should run the test', function() {
         expect(true).toBe(true);
     });
@@ -13,7 +13,7 @@ describe('Jokes router', function() {
             .post('/api/auth/login')
             .send({
                 username: 'showmethemoney',
-                password: 'showmethemoney',
+                password: 'showmethemoney'
             })
             .end((err, res) => {
                 token = res.body.token; // save the token!
@@ -224,7 +224,7 @@ describe('Jokes router', function() {
 
         test('PUT should return 200 and return user with changes with correct credentials', async () => {
             const response = await request(server)
-                .post(`/api/users${res.body.id}`)
+                .post(`/api/users/${res.body.id}`)
                 .send({ 
                     last_name: 'McTestFace'
                 })
@@ -241,9 +241,9 @@ describe('Jokes router', function() {
             });
         })
 
-        test('DELETE 200 and the deleted user with correct credentials', async () => {
+        test('DELETE /:id should return 200 and the deleted user with correct credentials', async () => {
             const response = await request(server)
-                .delete(`/api/users${res.body.id}`)
+                .delete(`/api/users/${res.body.id}`)
                 .set('Authorization', token);
             expect(response.status).toBe(200);
             expect(response.body.id).toBe(res.body.id);
