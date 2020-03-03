@@ -3,7 +3,7 @@ module.exports = (req, res, next) => {
         res.status(400).json( { 
             message: "Missing body data. Ensure you sent the ticket data you wish to be updated." 
         } );
-    } else if (req.body.asker_id || req.body.title || req.body.description || req.body.category || req.body.resolved || req.body.being_solved || req.body.solved_by || req.body.assignee || req.body.assigned_by) {
+    } else if (req.body.asker_id || req.body.title || req.body.description || req.body.category || typeof req.body.resolved !== 'undefined' || typeof req.body.being_solved !== 'undefined' || req.body.solved_by || req.body.assignee || req.body.assigned_by) {
         next();
     } else {
         //if the req has a body, but doesn't include any of the ticket's fields
