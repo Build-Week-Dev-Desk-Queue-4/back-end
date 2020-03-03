@@ -5,7 +5,7 @@ const validateTicketId = require('../utils/ticket-middleware/validateTicketId');
 const validateTicketPutAndFilter = require('../utils/ticket-middleware/validateTicketPutAndFilter');
 const getTicketData = require('../utils/ticket-middleware/getTicketData');
 const validateTicket = require('../utils/ticket-middleware/validateTicket');
-const validateTicketRemoval = require('../utils/ticket-middleware/validateTicketRemoval');
+const validateTicketAction = require('../utils/ticket-middleware/validateTicketAction');
 const comments = require('../comments/commentModel');
 const validateComment = require('../utils/comment-middleware/validateComment');
 
@@ -99,7 +99,7 @@ router.post('/', validateTicket, (req, res) => {
     });
 });
 
-router.put('/:id', validateTicketId, validateTicketPutAndFilter, (req, res) => {
+router.put('/:id', validateTicketId, validateTicketPutAndFilter, validateTicketAction, (req, res) => {
     tickets.update(req.body, req.params.id).then(async ticket => {
         const ticketToSend = await getTicketData(ticket);
         res.status(201).json(ticketToSend);
@@ -109,7 +109,7 @@ router.put('/:id', validateTicketId, validateTicketPutAndFilter, (req, res) => {
 });
 
 //can only be done by a team leads, section leads or the user themselves
-router.delete('/:id', validateTicketId, validateTicketRemoval, (req, res) => {
+router.delete('/:id', validateTicketId, validateTicketAction, (req, res) => {
     tickets.remove(req.params.id).then(async numDeleted => {
         const ticket = await getTicketData(req.ticket);
         res.status(200).json(ticket);
