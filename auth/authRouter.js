@@ -6,9 +6,9 @@ const errorHandler = require('../utils/errorHandler');
 const validateUser = require('../utils/user-middleware/validateUser');
 
 router.post('/register', validateUser, (req, res) => {
-    const { username, password, role, first_name, last_name, email } = req.body;
-    let user = { username, password, role, first_name, last_name, email };
-    const hash = bcrypt.hashSync(user.password, 8); //higher in production
+    const { username, password, role, first_name, last_name, email, image } = req.body;
+    let user = { username, password, role, first_name, last_name, email, image };
+    const hash = bcrypt.hashSync(user.password, 14); //higher in production
     user.password = hash;
 
     users.insert(user).then(addedUser => {
