@@ -4,7 +4,7 @@ const errorHandler = require('../utils/errorHandler');
 const validateUser = require('../utils/user-middleware/validateUser');
 const validateUserId = require('../utils/user-middleware/validateUserId');
 const validatePutAndFilter = require('../utils/user-middleware/validatePutAndFilter');
-const validateUserRemoval = require('../utils/user-middleware/validateUserRemoval');
+const validateUserAction = require('../utils/user-middleware/validateUserAction');
 const getTicketData = require('../utils/ticket-middleware/getTicketData');
 const checkRole = require('../utils/checkRole');
 
@@ -113,7 +113,8 @@ router.post('/', checkRole('section lead'), validateUser, (req, res) => {
     });
 });
 
-router.put('/:id', validateUserId, validatePutAndFilter, (req, res) => {
+//change so only user themself, section leads or team leads can edit a user
+router.put('/:id', validateUserId, validatePutAndFilter, validateUserAction, (req, res) => {
     users.update(req.body, req.params.id).then(user => {
         res.status(200).json(user);
     }).catch(err => {
@@ -122,7 +123,7 @@ router.put('/:id', validateUserId, validatePutAndFilter, (req, res) => {
 });
 
 //can only be done by a team leads, section leads or the user themselves
-router.delete('/:id', validateUserId, validateUserRemoval, (req, res) => {
+router.delete('/:id', validateUserId, validateUserAction, (req, res) => {
     users.remove(req.params.id).then(numDeleted => {
         res.status(200).json(req.user);
     }).catch(err => {

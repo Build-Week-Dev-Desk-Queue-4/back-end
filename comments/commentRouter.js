@@ -3,9 +3,9 @@ const comments = require('./commentModel');
 const errorHandler = require('../utils/errorHandler');
 const validateCommentId = require('../utils/comment-middleware/validateCommentId');
 const validateCommentPutAndFilter = require('../utils/comment-middleware/validateCommentPutAndFilter');
-const validateCommentRemoval = require('../utils/comment-middleware/validateCommentRemoval');
+const validateCommentAction = require('../utils/comment-middleware/validateCommentAction');
 
-router.put('/:id', validateCommentId, validateCommentPutAndFilter, (req, res) => {
+router.put('/:id', validateCommentId, validateCommentPutAndFilter, validateCommentAction, (req, res) => {
     comments.update(req.body, req.params.id).then(comment => {
         comment.is_solution === 0 ? comment.is_solution = false : comment.is_solution = true;
         res.status(200).json(comment);
@@ -15,7 +15,7 @@ router.put('/:id', validateCommentId, validateCommentPutAndFilter, (req, res) =>
 });
 
 //can only be done by a team leads, section leads or the user who posted the comment themselves
-router.delete('/:id', validateCommentId, validateCommentRemoval, (req, res) => {
+router.delete('/:id', validateCommentId, validateCommentAction, (req, res) => {
     comments.remove(req.params.id).then(comment => {
         comment.is_solution === 0 ? comment.is_solution = false : comment.is_solution = true;
         res.status(200).json(comment);

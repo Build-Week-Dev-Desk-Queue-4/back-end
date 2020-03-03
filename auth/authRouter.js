@@ -22,16 +22,22 @@ router.post('/register', validateUser, (req, res) => {
 router.post('/login', (req, res) => {
     let { username, password } = req.body;
 
-    users.getByWithPassword({ username }).first().then(user => {
-        if (user && bcrypt.compareSync(password, user.password)) {
-            const token = generateToken(user);
-            res.status(200).json({ message: `Welcome back, ${username}!`, token});
-        } else {
-            res.status(401).json({ message: 'Invalid Credentials' });
-        }
-    }).catch(err => {
-        errorHandler(res, err, 500, 'Unable to log user in.');
-    });
+    if (!req.body) {
+        res.status(400).json({ message: "Missing post data. Ensure you sent the user's login information." });
+    } else if (!req.body.username || !req.body.password) {
+        res.status(400).json({ message: "Incomplete user data. Please include the user's username and password" });
+    } else {
+        users.getByWithPassword({ username }).first().then(user => {
+            if (user && bcrypt.compareSync(password, user.password)) {
+                const token = generateToken(user);
+                res.status(200).json({ message: `Welcome back, ${username}!`, token});
+            } else {
+                res.status(401).json({ message: 'Invalid Credentials' });
+            }
+        }).catch(err => {
+            errorHandler(res, err, 500, 'Unable to log user in.');
+        });
+    }
 });
 
 module.exports = router;
