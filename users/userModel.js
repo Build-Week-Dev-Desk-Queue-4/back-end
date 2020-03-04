@@ -37,8 +37,7 @@ function getBy(filter) {
 
 //for login
 function getByWithPassword(filter) {
-    return db('users').where(filter)
-    .select('id', 'username', 'role', 'first_name', 'last_name', 'email', 'image');
+    return db('users').where(filter);
 }
 
 function getTicketsByAskerId(id) {
