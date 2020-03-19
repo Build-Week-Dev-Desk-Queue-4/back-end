@@ -18,10 +18,10 @@ module.exports = async ticket => {
     }
     const comments = await tickets.getComments(ticket.id);
     //convert 0/1 values to false/true
-    ticket.resolved === 0 ? ticket.resolved = false : ticket.resolved = true;
-    ticket.being_solved === 0 ? ticket.being_solved = false : ticket.being_solved = true;
+    (ticket.resolved === 0) ? ticket.resolved = false : ticket.resolved = true;
+    (ticket.being_solved === 0) ? ticket.being_solved = false : ticket.being_solved = true;
     comments.forEach(comment => {
-        comment.is_solution === 0 ? comment.is_solution = false : comment.is_solution = true;
+        (comment.is_solution === 0) ? comment.is_solution = false : comment.is_solution = true;
         return comment;
     });
     return { ...ticket, asker: asker, solved_by: solver, assignee: assignee, assigned_by: assigner, comments: comments };
