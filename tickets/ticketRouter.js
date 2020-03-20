@@ -23,7 +23,7 @@ router.get('/:id', validateTicketId, async (req, res) => {
     res.status(200).json(ticket);
 });
 
-router.get('/getby/filter', validateTicketPutAndFilter, (req, res) => {
+router.post('/getby/filter', validateTicketPutAndFilter, (req, res) => {
     //must be { clumname: columnvalue}
     tickets.getBy(req.body).then(async tickets => {
         if (tickets.length > 0) {
