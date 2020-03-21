@@ -5,6 +5,9 @@ module.exports = async ticket => {
     let solver = ticket.solved_by;
     let assignee = ticket.assignee;
     let assigner = ticket.assigned_by;
+    const ticketCreated = new Date(ticket.created_at);
+    const elapsedTimeMs = Date.now() - ticketCreated;
+    ticket.created_at = elapsedTimeMs;
     const asker = await users.getById(ticket.asker_id);
     delete ticket.asker_id;
     if (ticket.solved_by) {
