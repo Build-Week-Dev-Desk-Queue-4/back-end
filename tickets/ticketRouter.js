@@ -68,7 +68,8 @@ router.get('/:id/comments', validateTicketId, (req, res) => {
     tickets.getComments(req.params.id).then(comments => {
         if (comments.length > 0) {
             comments.forEach(comment => {
-                comment.is_solution === 0 ? comment.is_solution = false : comment.is_solution = true;
+                //not needed for PostgreSQL
+                // comment.is_solution === 0 ? comment.is_solution = false : comment.is_solution = true;
                 return comment;
             });
             res.status(200).json(comments);
@@ -83,7 +84,8 @@ router.get('/:id/comments', validateTicketId, (req, res) => {
 /*********************** COMMENT POST ********************/
 router.post('/:id/comments', validateTicketId, validateComment, (req, res) => {
     comments.insert(req.body).then(comment => {
-        (comment.is_solution === 0) ? comment.is_solution = false : comment.is_solution = true;
+        //not needed for PostgreSQL
+        // (comment.is_solution === 0) ? comment.is_solution = false : comment.is_solution = true;
         res.status(201).json(comment);
     }).catch(err => {
         errorHandler(res, err, 500, 'Could not add comment.');
