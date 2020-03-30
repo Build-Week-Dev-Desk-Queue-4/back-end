@@ -22,7 +22,7 @@ router.get('/:id', validateUserId, (req, res) => {
 });
 
 //Allows for filtering with strings that are LIKE values
-router.get('/getby/filter', validatePutAndFilter, (req, res) => {
+router.post('/getby/filter', validatePutAndFilter, (req, res) => {
     //must be { columname: columnvalue}
     users.getBy(req.body).then(users => {
         if (users.length > 0) {
